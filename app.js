@@ -2,13 +2,13 @@ const inquirer = require("inquirer");
 const fs = require('fs');
 const generatePage = require('./src/page-template');
 const mockData = {
-    name: 'd',
-    github: 'd',
+    name: 'dylan',
+    github: 'dylangit',
     confirmAbout: true,
-    about: 'jjj',
+    about: 'aboutd',
     projects: [{
-      name: 'p',
-      description: 'pd',
+      name: 'projname',
+      description: 'projdesc',
       languages: [
         'JavaScript',
         'HTML',
@@ -18,7 +18,7 @@ const mockData = {
         'Bootstrap',
         'Node'
       ],
-      link: 'd',
+      link: 'dlink',
       feature: false,
       confirmAddProject: false
     }]
@@ -162,14 +162,14 @@ const promptProject = (portfolioData) => {
     });
 };
 
-// promptUser()
-//   .then(promptProject)
-//   .then(portfolioData => {
-    const pageHTML = generatePage(mockData);
+promptUser()
+  .then(promptProject)
+  .then(portfolioData => {
+    const pageHTML = generatePage(portfolioData);
 
-    // fs.writeFile('./index.html', pageHTML, err => {
-    //   if (err) throw new Error(err);
+    fs.writeFile('./index.html', pageHTML, err => {
+      if (err) throw new Error(err);
 
-    //   console.log('Page created! Check out index.html in this directory to see it!');
-    // });
-  // });
+      console.log('Page created! Check out index.html in this directory to see it!');
+    });
+  });

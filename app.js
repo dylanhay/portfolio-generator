@@ -1,29 +1,30 @@
 const inquirer = require("inquirer");
-const fs = require('fs');
-const generatePage = require('./src/page-template');
+const { writeFile, copyFile } = require("./utils/generate-site.js");
+const generatePage = require("./src/page-template");
 const mockData = {
-    name: 'dylan',
-    github: 'dylangit',
-    confirmAbout: true,
-    about: 'aboutd',
-    projects: [{
-      name: 'projname',
-      description: 'projdesc',
+  name: "dylan",
+  github: "dylangit",
+  confirmAbout: true,
+  about: "aboutd",
+  projects: [
+    {
+      name: "projname",
+      description: "projdesc",
       languages: [
-        'JavaScript',
-        'HTML',
-        'CSS',
-        'ES6',
-        'jQuery',
-        'Bootstrap',
-        'Node'
+        "JavaScript",
+        "HTML",
+        "CSS",
+        "ES6",
+        "jQuery",
+        "Bootstrap",
+        "Node",
       ],
-      link: 'dlink',
+      link: "dlink",
       feature: false,
-      confirmAddProject: false
-    }]
-    }
-
+      confirmAddProject: false,
+    },
+  ],
+};
 
 const promptUser = () => {
   return inquirer.prompt([
@@ -61,17 +62,17 @@ const promptUser = () => {
       default: true,
     },
     {
-        type: 'input',
-        name: 'about',
-        message: 'Provide some information about yourself:',
-        when: ({ confirmAbout }) => {
-          if (confirmAbout) {
-            return true;
-          } else {
-            return false;
-          }
+      type: "input",
+      name: "about",
+      message: "Provide some information about yourself:",
+      when: ({ confirmAbout }) => {
+        if (confirmAbout) {
+          return true;
+        } else {
+          return false;
         }
-    }
+      },
+    },
   ]);
 };
 
@@ -164,12 +165,19 @@ const promptProject = (portfolioData) => {
 
 promptUser()
   .then(promptProject)
-  .then(portfolioData => {
-    const pageHTML = generatePage(portfolioData);
-
-    fs.writeFile('./index.html', pageHTML, err => {
-      if (err) throw new Error(err);
-
-      console.log('Page created! Check out index.html in this directory to see it!');
-    });
+  .then((portfolioData) => {
+    return generatePage(portfolioData);
+  })
+  .then((pageHTML) => {
+    return writeFile(pageHTML);
+  })
+  .then((writeFileResponse) => {
+    console.log(writeFileResponse);
+    return copyFile();
+  })
+  .then((copyFileResponse) => {
+    console.log(copyFileResponse);
+  })
+  .catch((err) => {
+    console.log(err);
   });
